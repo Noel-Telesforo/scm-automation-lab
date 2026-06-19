@@ -15,7 +15,10 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "jest": "^30.4.2",
+    "semantic-release": "^24.2.9",
     "supertest": "^7.2.2"
   }
 }
