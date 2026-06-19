@@ -1,0 +1,23 @@
+# Escaneo automático de dependencias con Dependabot, en busca de versiones con vulnerabilidades conocidas y opcionalmete rea PRs automáticos para actualizarlas
+version: 2
+# Lista de ecosistemas a monitorear
+updates:
+  # Configuración para dependencias de npm (node.js)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      # Limite de PRs abiertos simultaneamente para evitar saturar el repositorio
+      open-pull-requests-limit: 5
+      commit-message:
+        prefix: "chore"
+        include: "scope"
+      reviewers:
+        - "Noel-Telesforo"
+  # Configuración para docker, monitoreará la imagen base y propondrá actualizaciones
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(docker)"

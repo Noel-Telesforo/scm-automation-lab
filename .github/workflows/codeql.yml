@@ -1,0 +1,47 @@
+# CodeQL escanea el código en busca de vulnerabilidades
+name: "CodeQL Security Scan"
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    # Solo se ejecuta en PRs que tocan archivos de código
+    paths:
+      - 'src/**'
+      - 'tests/**'
+  schedule:
+    # Se ejecuta automáticamente cada semana
+    - cron: '30 1 * * 0'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        languaje: ['javascript']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Initialize CodeQL con el lenguaje especificado en la matriz
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languajes: ${{ matrix.languaje }}
+      
+      # Construye el código (soloinstala dependencias)
+      - name: Installl dependencies
+        run: npm install
+
+      # Ejecuta el análisis de CodeQL
+      - name: Performan CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.languaje }}"
