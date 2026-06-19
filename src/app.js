@@ -9,6 +9,10 @@ app.get("/health", (req, res) => {
   res.send("OK")
 })
 
+app.get("/version", (req, res) => {
+  res.json({ version: "1.0.0" })
+})
+
 const port = process.env.PORT || 3000;
 
 if(require.main === module) {
