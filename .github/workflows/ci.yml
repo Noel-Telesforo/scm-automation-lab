@@ -1,0 +1,39 @@
+# Nombre del workflow
+name: CI Pipeline
+
+# Evento que desencadena el workflow
+on:
+  # Se ejecutara en cada Pull Request que se abra, se actualice o se sincronice.
+  pull_request:
+    types: [opened, synchronize, reopened]
+  # Se ejecutará cuando haya un push directo a la rama main
+  push:
+    branches: [main]
+
+# El trabajo principal que ejecutará:
+jobs:
+  # Nombre del job
+  build-and-test:
+    # Runner: Maquina virtual donde se ejecutará.
+    runs-on: ubuntu-latest
+    # Pasos a ejecutar en el job
+    steps:
+      # 1.- Checkout: descarga el código del repositorio al runner.
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # 2.- Setup Node.js: Instala la versión de node
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          #Caché: Guarda la carpeta node_modules para que no se descargué cada vez.
+          cache: 'npm'
+      # 3.- Instala dependencias:
+      - name: Install dependencias
+        run: npm install
+      # 4.- Ejecuta los tests:
+      - name: Run tests
+        run: npm test
+      # 5.- Construye la imagen Docker
+      - name: Build Docker image
+        run: docker build -t scm-automation-lab .
